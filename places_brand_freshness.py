@@ -46,7 +46,7 @@ joined_df_styled = (
     })
 )
 
-st.dataframe(joined_df_styled, use_container_width=True)
+st.dataframe(joined_df_styled, use_container_width=True, hide_index=True)
 
 #### Brand Freshness Top 30 ####
 brand_freshness_30_df = read_from_gsheets("Brand freshness")[
