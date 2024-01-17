@@ -54,4 +54,4 @@ brands_by_country = alt.Chart(brands_by_country_df).mark_bar().encode(
     labelAngle=45
 )
 
-st.altair_chart(brands_by_country)st.altair_chart(last_12_months, use_container_width=True)
+st.altair_chart(brands_by_country, use_container_width=True)
