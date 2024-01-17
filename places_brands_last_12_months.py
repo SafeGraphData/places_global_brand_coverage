@@ -8,12 +8,12 @@ import streamlit.components.v1 as components
 
 
 st.set_page_config(
-    page_title="Places Summary Statistics - Last 12 Months",
+    page_title="Places Summary Statistics - Brands Last 12 Months",
     layout="wide"
 )
-#### Last 12 Months ####
+#### Brands By Country Last 12 months ####
 global_places_df = read_from_gsheets("Global Places")
-global_places_df = global_places_df[["Release month", "Country", "Total POI"]]
+global_places_df = global_places_df[["Release month", "Country", "Distinct brands"]]
 
 for i, value in enumerate(global_places_df['Release month']):
     try:
@@ -24,34 +24,34 @@ for i, value in enumerate(global_places_df['Release month']):
 start_date_str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m")
 
 global_places_df["Release month"] = pd.to_datetime(global_places_df["Release month"])
-last_12_months_df = global_places_df[
+brands_by_country_df = global_places_df[
     (global_places_df["Release month"] >= start_date_str) & (global_places_df["Release month"] <= datetime.now()) &
     (global_places_df["Country"] != "Grand Total")
 ]
-last_12_months_df["Release month"] = last_12_months_df["Release month"].dt.strftime("%Y-%m")
-last_12_months_df['Total POI'] = pd.to_numeric(last_12_months_df['Total POI'])
+brands_by_country_df["Release month"] = brands_by_country_df["Release month"].dt.strftime("%Y-%m")
+brands_by_country_df["Distinct brands"] = pd.to_numeric(brands_by_country_df["Distinct brands"])
 
-# st.dataframe(last_12_months_df)
+# st.dataframe(brands_by_country_df)
 
-last_12_months = alt.Chart(last_12_months_df).mark_bar().encode(
+brands_by_country = alt.Chart(brands_by_country_df).mark_bar().encode(
     x='Release month',
-    y='Total POI',
+    y='Distinct brands',
     color='Country',
     tooltip=[alt.Tooltip('Release month'),
              alt.Tooltip('Country'),
-             alt.Tooltip('Total POI', format=',')]
+             alt.Tooltip('Distinct brands', format=',')]
 ).properties(
     width=900,
     height=500,
     title=alt.TitleParams(
-        text='Total POI Count - Last 12 months',
+        text='Distinct Brand Count by Country - Last 12 months',
         fontSize=18
     )
 ).configure_axisY(
-    labelAngle=20
+    labelAngle=0
 ).configure_axisX(
     title=None,
     labelAngle=45
 )
 
-st.altair_chart(last_12_months, use_container_width=True)
+st.altair_chart(brands_by_country)st.altair_chart(last_12_months, use_container_width=True)
