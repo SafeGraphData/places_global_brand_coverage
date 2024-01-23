@@ -47,10 +47,10 @@ brands_by_country_df_styled = (
 brand_tab1, brand_tab2 = st.tabs(["Top 1,000 Brands", "Brand Count By Country"])
 
 with brand_tab1:
-    st.dataframe(top_1000_brands_styled, use_container_width=True)
+    st.dataframe(top_1000_brands_styled, use_container_width=True, hide_index=True)
 
 with brand_tab2:
-    st.dataframe(brands_by_country_df_styled, use_container_width=True)
+    st.dataframe(brands_by_country_df_styled, use_container_width=True, hide_index=True)
 
 
 hide_streamlit_style = """
