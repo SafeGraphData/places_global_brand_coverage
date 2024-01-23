@@ -44,3 +44,19 @@ with brand_tab1:
 
 with brand_tab2:
     st.dataframe(brands_by_country_df_styled, use_container_width=True)
+
+
+hide_streamlit_style = """
+            <style>
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            footer {visibility: hidden !important;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+hide_decoration_bar_style = '''
+    <style>
+        header {visibility: hidden;}
+    </style>
+'''
+st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
