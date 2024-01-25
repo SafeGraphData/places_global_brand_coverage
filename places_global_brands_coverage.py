@@ -35,7 +35,7 @@ brands_by_country_df = (
 )
 
 
-country_list = st.selectbox("Countries:", [""] + brands_by_country_df['Country Name'].tolist())
+country_list = st.selectbox("Country Name:", [""] + brands_by_country_df['Country Name'].tolist())
 
 brand_tab1, brand_tab2 = st.tabs(["Top 1,000 Brands", "Brand Count By Country"])
 
