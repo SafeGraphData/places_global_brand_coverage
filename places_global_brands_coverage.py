@@ -23,10 +23,6 @@ top_1000_brands_df = (
 
 top_1000_brands_df =  top_1000_brands_df[[x.isnumeric() for x in top_1000_brands_df['NAICS Code']]].reset_index().drop("index", axis=1)
 
-top_1000_brands_styled = (
-    top_1000_brands_df
-    .style.apply(lambda x: ['background-color: #D7E8ED' if i % 2 == 0 else '' for i in range(len(x))], axis=0)
-)
 
 brands_by_country_df = (
     read_from_gsheets("Countries")
@@ -38,19 +34,43 @@ brands_by_country_df = (
     .reset_index(drop=True)
 )
 
-brands_by_country_df_styled = (
-    brands_by_country_df.style
-    .apply(lambda x: ['background-color: #D7E8ED' if i%2==0 else '' for i in range(len(x))], axis=0)
-    .format({"Distinct brands": "{:,.0f}"})
-)
+
+country_list = st.selectbox("Countries:", [""] + brands_by_country_df['Country Name'].tolist())
 
 brand_tab1, brand_tab2 = st.tabs(["Top 1,000 Brands", "Brand Count By Country"])
 
+
 with brand_tab1:
-    st.dataframe(top_1000_brands_styled, use_container_width=True, hide_index=True)
+    if country_list:
+        top_1000_brands_styled = (
+            top_1000_brands_df[top_1000_brands_df['Country Name List'].str.contains(country_list)]
+            .style.apply(lambda x: ['background-color: #D7E8ED' if i % 2 == 0 else '' for i in range(len(x))], axis=0)
+        )
+
+        st.dataframe(top_1000_brands_styled, use_container_width=True, hide_index=True)
+    else:
+        top_1000_brands_styled = (
+            top_1000_brands_df
+            .style.apply(lambda x: ['background-color: #D7E8ED' if i % 2 == 0 else '' for i in range(len(x))], axis=0)
+        )
+        st.dataframe(top_1000_brands_styled, use_container_width=True, hide_index=True)
 
 with brand_tab2:
+    if country_list:
+        brands_by_country_df_styled = (
+            brands_by_country_df[brands_by_country_df['Country Name'].str.contains(country_list)].style
+            .apply(lambda x: ['background-color: #D7E8ED' if i%2==0 else '' for i in range(len(x))], axis=0)
+            .format({"Distinct brands": "{:,.0f}"})
+        )
+    else:
+         brands_by_country_df_styled = (
+            brands_by_country_df.style
+            .apply(lambda x: ['background-color: #D7E8ED' if i%2==0 else '' for i in range(len(x))], axis=0)
+            .format({"Distinct brands": "{:,.0f}"})
+        )
+
     st.dataframe(brands_by_country_df_styled, use_container_width=True, hide_index=True)
+
 
 
 hide_streamlit_style = """
